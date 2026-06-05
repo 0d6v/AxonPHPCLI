@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Commands;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Symfony\Component\Console\Attribute\AsCommand;
 
 #[AsCommand(
     name: 'ci:init',
@@ -17,7 +16,6 @@ use Symfony\Component\Console\Attribute\AsCommand;
 )]
 final class CiInitCommand extends Command
 {
-
     protected function configure(): void
     {
         $this
@@ -26,7 +24,8 @@ final class CiInitCommand extends Command
                 'provider',
                 InputArgument::REQUIRED,
                 'github'
-            );
+            )
+        ;
     }
 
     protected function execute(
@@ -35,7 +34,7 @@ final class CiInitCommand extends Command
     ): int {
         $provider = $input->getArgument('provider');
 
-        if ($provider !== 'github') {
+        if ('github' !== $provider) {
             $output->writeln(
                 '<error>Nur github wird aktuell unterstützt.</error>'
             );
@@ -43,13 +42,13 @@ final class CiInitCommand extends Command
             return Command::FAILURE;
         }
 
-        $templatePath =
-            dirname(__DIR__) .
-            '/templates/github/test.yml';
+        $templatePath
+            = dirname(__DIR__)
+            .'/templates/github/test.yml';
 
         $template = file_get_contents($templatePath);
 
-        if ($template === false) {
+        if (false === $template) {
             $output->writeln(
                 '<error>Template nicht gefunden.</error>'
             );
@@ -57,21 +56,21 @@ final class CiInitCommand extends Command
             return Command::FAILURE;
         }
 
-        $workflowDirectory =
-            getcwd() .
-            DIRECTORY_SEPARATOR .
-            '.github' .
-            DIRECTORY_SEPARATOR .
-            'workflows';
+        $workflowDirectory
+            = getcwd()
+            .DIRECTORY_SEPARATOR
+            .'.github'
+            .DIRECTORY_SEPARATOR
+            .'workflows';
 
         if (!is_dir($workflowDirectory)) {
-            mkdir($workflowDirectory, 0777, true);
+            mkdir($workflowDirectory, 0o777, true);
         }
 
-        $targetFile =
-            $workflowDirectory .
-            DIRECTORY_SEPARATOR .
-            'test.yml';
+        $targetFile
+            = $workflowDirectory
+            .DIRECTORY_SEPARATOR
+            .'test.yml';
 
         file_put_contents(
             $targetFile,
