@@ -1,0 +1,28 @@
+# Composer dependencies
+/vendor/
+
+# Local tooling caches
+.php-cs-fixer.cache
+.phpunit.result.cache
+
+# Test / build artifacts
+/coverage/
+/build/
+/dist/
+/tmp/
+/var/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE / editor files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
